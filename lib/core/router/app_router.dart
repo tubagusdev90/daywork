@@ -3,9 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
+import '../../features/wages/pages/wages_page.dart';
+import '../../features/attendance/pages/attendance_page.dart';
 import '../../features/auth/pages/login_page.dart';
 import '../../features/dashboard/pages/dashboard_page.dart';
+import '../../features/attendance/pages/worker_attendance_page.dart';
+import '../../features/pay_periods/pages/pay_periods_page.dart';
+
+
 
 class AuthRefreshNotifier extends ChangeNotifier {
   late final StreamSubscription _subscription;
@@ -44,9 +49,26 @@ GoRouter createAppRouter(AuthRefreshNotifier authNotifier) {
         builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
-  path: '/dashboard',
-  builder: (context, state) => const DashboardPage(),
-),
+        path: '/dashboard',
+        builder: (context, state) => const DashboardPage(),
+      ),
+      GoRoute(
+        path: '/wages',
+        builder: (context, state) => const WagesPage(),
+      ),
+      GoRoute(
+        path: '/payment-periods',
+        builder: (context, state) => const PayPeriodsPage(),
+      ),
+      GoRoute(
+        path: '/attendance',
+        builder: (context, state) => const AttendancePage(),
+      ),
+      GoRoute(
+        path: '/attendance/worker',
+        builder: (context, state) =>
+            const WorkerAttendancePage(),
+      ),
     ],
     errorBuilder: (context, state) => Scaffold(
       body: Center(

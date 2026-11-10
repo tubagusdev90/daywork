@@ -4,9 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/intl.dart';
-
+import '../../workers/pages/workers_page.dart';
 import '../models/dashboard_summary.dart';
 import '../providers/dashboard_provider.dart';
+import '../../attendance/pages/worker_attendance_page.dart';
+
 
 // ==========================================
 // DASHBOARD PAGE
@@ -54,19 +56,12 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
   Widget build(BuildContext context) {
     final pages = [
       const DashboardOverview(),
-      const ComingSoonPage(
-        title: 'Data Pekerja',
-        description: 'Kelola data dan informasi seluruh pekerja.',
-        icon: Icons.people_outline,
+      const WorkersPage(),
+      const WorkerAttendancePage(
+        
       ),
-      const ComingSoonPage(
-        title: 'Absensi Pekerja',
-        description: 'Catat dan pantau kehadiran pekerja.',
-        icon: Icons.calendar_month_outlined,
-      ),
-      MoreMenuPage(
-        onLogout: _logout,
-      ),
+      MoreMenuPage(onLogout: _logout),
+      
     ];
 
     return Scaffold(
@@ -665,6 +660,7 @@ class ComingSoonPage extends StatelessWidget {
 // MORE MENU PAGE
 // ==========================================
 
+
 class MoreMenuPage extends StatelessWidget {
   final VoidCallback onLogout;
 
@@ -676,6 +672,11 @@ class MoreMenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final menus = [
+      {
+        'title': 'Detail Absensi Per Pekerja',
+        'subtitle': 'Lihat kalender kehadiran setiap pekerja',
+        'icon': Icons.person_search_rounded,
+      },
       {
         'title': 'Data Upah',
         'subtitle': 'Tarif harian dan riwayat kenaikan',
@@ -700,11 +701,6 @@ class MoreMenuPage extends StatelessWidget {
         'title': 'Laporan',
         'subtitle': 'Laporan dan slip gaji',
         'icon': Icons.receipt_long_outlined,
-      },
-      {
-        'title': 'Hari Libur',
-        'subtitle': 'Pengaturan hari libur',
-        'icon': Icons.event_busy_outlined,
       },
       {
         'title': 'Pengaturan',
@@ -777,10 +773,27 @@ class MoreMenuPage extends StatelessWidget {
                 color: Color(0xFF94A3B8),
               ),
               onTap: () {
+                final title = menu['title'] as String;
+
+                if (title == 'Detail Absensi Per Pekerja') {
+                  context.push('/attendance/worker');
+                  return;
+                }
+
+                if (title == 'Data Upah') {
+                  context.push('/wages');
+                  return;
+                }
+
+                if (title == 'Periode Pembayaran') {
+                  context.push('/payment-periods');
+                  return;
+                }
+
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      '${menu['title']} akan dikembangkan pada tahap berikutnya.',
+                      '$title akan dikembangkan pada tahap berikutnya.',
                     ),
                   ),
                 );
@@ -795,13 +808,18 @@ class MoreMenuPage extends StatelessWidget {
           height: 50,
           child: OutlinedButton.icon(
             onPressed: onLogout,
-            icon: const Icon(Icons.logout, color: Colors.red),
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.red,
+            ),
             label: const Text(
               'Keluar dari Aplikasi',
               style: TextStyle(color: Colors.red),
             ),
             style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: Color(0xFFFECACA)),
+              side: const BorderSide(
+                color: Color(0xFFFECACA),
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

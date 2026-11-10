@@ -1,0 +1,1 @@
+import '../../features/wages/pages/wages_page.dart';

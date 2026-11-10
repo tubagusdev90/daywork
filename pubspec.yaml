@@ -16,7 +16,7 @@ dependencies:
   google_fonts: ^8.2.1
   gotrue: ^2.27.3
   image_picker: ^1.2.4
-  intl: ^0.20.2
+  intl: ^0.20.3
   pdf: ^3.13.1
   printing: ^5.15.1
   supabase_flutter: ^2.18.3
